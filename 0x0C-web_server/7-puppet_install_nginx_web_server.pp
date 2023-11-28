@@ -1,35 +1,20 @@
-class { 'nginx':
-  ensure  => 'installed',
-  service => 'running',
-}
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => '
-    server {
-      listen 80;
+#setup nginx
 
-      location / {
-        return 200 "Hello World!\n";
-      }
+package {
+    'nginx':
+    ensure => installed,
+}
 
-      location /redirect_me {
-        return 301 http://$host/;
-      }
-    }
-  ',
-  notify  => Service['nginx'],
+file {'/var/www/html/index.nginx-debian.html':
+    content => 'Hello World!',
 }
-file { '/etc/nginx/sites-enabled/default':
-  ensure  => 'link',
-  target  => '/etc/nginx/sites-available/default',
-  require => File['/etc/nginx/sites-available/default'],
-  notify  => Service['nginx'],
+
+file_line {'configure redirection':
+    path  =>  '/etc/nginx/sites-available/default',
+    after =>  'server_name _;',
+    line  =>  "\n\tlocation /redirect_me {\n\t\treturn 301 https://youtu.be/dQw4w9WgXcQ;\n\t}\n",
 }
-file { '/etc/nginx/sites-enabled/default':
-  ensure => 'absent',
-}
-service { 'nginx':
-  ensure    => 'running',
-  enable    => true,
-  subscribe => File['/etc/nginx/sites-available/default'],
+
+service {'nginx':
+    ensure => running,
 }
