@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Digging information about subdomains
+# shellcheck disable=SC2086
+
+dig_subs()
+{
+    result=$(dig $i.$1 | awk '/ANSWER SECTION:/ {getline; print $4}')
+    ip=$(dig $i.$1 | awk '/ANSWER SECTION:/ {getline; print $5}')
+}
+
+if [ -z $2 ]; then
+    for i in "www" "lb-01" "web-01" "web-02"; do
+	dig_subs $1
+	echo "The subdomain $i is a $result record and points to $ip"
+    done
+else
+    i=$2
+    dig_subs $1
+    echo "The subdomain $i is a $result record and points to $ip"
+fi
