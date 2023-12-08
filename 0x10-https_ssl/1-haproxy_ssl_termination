@@ -39,6 +39,6 @@ frontend load_balancer
     default_backend webserver
 backend webserver
     balance roundrobin
-    server 228892-web-01 54.160.75.117:80 check
-    server 228892-web-02 18.204.20.216:80 check
+    server 228892-web-01 18.206.202.212 check
+    server 228892-web-02 100.26.212.51 check
 
