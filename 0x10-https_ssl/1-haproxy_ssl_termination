@@ -37,6 +37,9 @@ frontend load_balancer
     bind *:80
     mode http
     default_backend webserver
+frontend www-https
+        bind *:443 ssl crt /etc/haproxy/certs/www.ahmed-dev.tech.pem
+        default_backend webserver
 backend webserver
     balance roundrobin
     server 228892-web-01 18.206.202.212:80 check
