@@ -9,22 +9,12 @@ import sys
 
 
 if __name__ == "__main__":
+    u_id = sys.argv[1]
     url = "https://jsonplaceholder.typicode.com/"
-    employee_id = sys.argv[1]
-    filename = employee_id + ".json"
+    user = requests.get(url+"users/{}".format(u_id)).json()
+    username = user.get("username")
+    todos = requests.get(url+"todos", params={"userId": u_id}).json()
 
-    employee = requests.get(url + "users/" + employee_id)
-    employee = employee.json()
-
-    tasks = requests.get(url + "todos?userId=" + employee_id)
-    tasks = tasks.json()
-
-    tasks_list = []
-    for item in tasks:
-        tasks_list.append(item)
-
-    employee_tasks = {}
-    employee_tasks[employee_id] = tasks_list
-
-    with open(filename, mode="w") as json_file:
-        json.dump(employee_tasks, json_file)
+    with open("{}.json".format(u_id), "w") as jsonfile:
+        json.dump({u_id: [{"task": t.get("title"), "completed": t.get(
+            "completed"), "username": username} for t in todos]}, jsonfile)
