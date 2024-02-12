@@ -1,9 +1,8 @@
 # Nginx configuration for proxying requests to Flask and Gunicorn
+# For recomendation
 
 server {
-    listen 80 default_server;
-    listen [::]:80 default_server;
-
+    listen 80;
     # IP as server domain
     server_name portfolio.mwakazieric.tech;
 
@@ -12,14 +11,16 @@ server {
 
     # Setting up / for recommendation home
     location / {
-	proxy_pass http://127.0.0.1:8000/;
+	proxy_pass http://127.0.0.1:8000;
 	}
 
     # Serves static content for v4
     location /static {
 	alias /home/ubuntu/Music_recommendation_system/recomendation/static;
 	}
-
+    location /templates {
+	alias /home/ubuntu/Music_recommendation_system/recomendation/templates;
+	}
     # Error page redirection
     error_page 404 /404.html;
     location /404 {
