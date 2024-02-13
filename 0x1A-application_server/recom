@@ -4,7 +4,7 @@
 server {
     listen 80;
     # IP as server domain
-    server_name portfolio.mwakazieric.tech;
+    server_name recom.portfolio.mwakazieric.tech;
 
     # Customize HTTP response header
     add_header X-Served-By 247739-web-01;
