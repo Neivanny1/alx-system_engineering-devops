@@ -1,0 +1,16 @@
+[Unit]
+Description=Gunicorn instance for Airbnb Clone on port 7000
+After=network.target
+
+[Service]
+User=ubuntu
+WorkingDirectory=/home/ubuntu/Music_recommendation_system/auths
+ExecStart=/home/ubuntu/.local/bin/gunicorn -b 0.0.0.0:7000 app:app
+Restart=always
+SyslogIdentifier=gunicorn_airbnb_service1
+
+StandardOutput=append:/tmp/airbnb_service1-access.log
+StandardError=append:/tmp/airbnb_service1-error.log
+
+[Install]
+WantedBy=multi-user.target
